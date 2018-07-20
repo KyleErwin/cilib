@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="description" content="docs">
+<meta name="generator" content="Paradox, paradox-material-theme=0.4.0, mkdocs-material=2.2.2">
+
+<meta name="lang:clipboard.copy" content="Copy to clipboard">
+<meta name="lang:clipboard.copied" content="Copied to clipboard">
+<meta name="lang:search.result.none" content="No matching documents">
+<meta name="lang:search.result.one" content="1 matching document">
+<meta name="lang:search.result.other" content="# matching documents">
+<meta name="lang:search.language" content="">
+<meta name="lang:search.tokenizer" content="[\s\-]+">
+
+
+<meta name="description" content="docs">
+<link rel="shortcut icon" href="../img/favicon.png">
+<title>Entity · Cilib</title>
+<link rel="stylesheet" href="../assets/stylesheets/application.7a4cdee3.css">
+<link rel="stylesheet" href="../lib/material__tabs/dist/mdc.tabs.min.css">
+<link rel="stylesheet" href="../lib/prettify/prettify.css">
+<script src="../lib/modernizr/modernizr.min.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+<style>
+body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}
+code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="../assets/stylesheets/paradox-material-theme.css">
+</head>
+<body
+>
+<input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="drawer">
+<input class="md-toggle" data-md-toggle="search" type="checkbox" id="search">
+<label class="md-overlay" data-md-component="overlay" for="drawer"></label>
+<header class="md-header" data-md-component="header">
+<nav class="md-header-nav md-grid">
+<div class="md-flex">
+<div class="md-flex__cell md-flex__cell--shrink">
+<a href="../index.html" title="Cilib" class="md-header-nav__button md-logo">
+<img src="../img/cilib_logo_transparent.png" width="24" height="24">
+</a>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--menu md-header-nav__button" for="drawer"></label>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch">
+<div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+<span class="md-header-nav__topic">
+Cilib
+</span>
+<span class="md-header-nav__topic">
+Entity
+</span>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--search md-header-nav__button" for="search"></label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="search"></label>
+<div class="md-search__inner">
+<form class="md-search__form" name="search">
+<input type="text" class="md-search__input" name="query" required placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query">
+<label class="md-icon md-search__icon" for="search"></label>
+<button type="reset" class="md-icon md-search__icon" data-md-component="reset">&#xE5CD;</button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix>
+<div class="md-search-result" data-md-component="result">
+<div class="md-search-result__meta">
+Type to start searching
+</div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<div class="md-header-nav__source">
+<a href="https://github.com/cirg-up/cilib"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+cirg-up/cilib
+</div>
+</a>
+
+</div>
+</div>
+</div>
+</nav>
+</header>
+
+<div class="md-container">
+<main class="md-main">
+<div class="md-main__inner md-grid" data-md-component="container">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--primary" data-md-level="0" style="visibility: hidden">
+<label class="md-nav__title md-nav__title--site" for="drawer">
+<span class="md-nav__button md-logo">
+<img src="../img/cilib_logo_transparent.png" width="24" height="24">
+</span>
+<a href="../index.html" title="Cilib">
+Cilib
+</a>
+</label>
+<div class="md-nav__source">
+<a href="https://github.com/cirg-up/cilib"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+cirg-up/cilib
+</div>
+</a>
+
+</div>
+<label class="md-nav__link" style="padding-left: 12px">
+<a href="../blog/index.html" title="Blog">
+Blog
+</a>
+</label>
+<label class="md-nav__link" style="padding-left: 12px; padding-bottom: 14px">
+<a href="../api/cilib" target="_blank">API</a>
+</label>
+<ul>
+  <li><a href="../design/index.html" class="page">Design</a>
+  <ul>
+    <li><a href="../design/overview.html" class="page">Overview</a></li>
+    <li><a href="../design/lenses.html" class="page">Immutable data</a></li>
+    <li><a href="../design/position.html" class="page">Position</a></li>
+    <li><a href="../design/entity.html" class="active page">Entity</a></li>
+    <li><a href="../design/rvar.html" class="page">RVar</a></li>
+    <li><a href="../design/step.html" class="page">Step</a></li>
+    <li><a href="../design/step_with_state.html" class="page">Step with state (aka StepS)</a></li>
+  </ul></li>
+  <li><a href="../usage/index.html" class="page">Usage</a>
+  <ul>
+    <li><a href="../usage/gbestpso.html" class="page">Global Best PSO (GBestPSO)</a></li>
+  </ul></li>
+</ul>
+<nav class="md-nav md-nav--secondary">
+</nav>
+
+<div class="md-nav__title--site md-version" title="Version">
+<i class="md-icon">label_outline</i> 2.0.1-24-g00032e7
+</div>
+</nav>
+
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<div class="md-content__searchable">
+<h1><a href="#entity" name="entity" class="anchor"><span class="anchor-link"></span></a>Entity</h1>
+<p>Within swarm intelligence, evolutionary computation and other, similar algorithms, there is always a metaphor that the algorithm is based on. Using this metaphor, the participants within the algorithm are also appropriately named. For example, within a Particle Swarm Optimization (PSO), the participants are referred to as Particles, with Individuals being used in both Differential Evolution (DE) and Genetic Algorithms (GA). Many other examples can easily be identified in available literature.</p>
+<p>It is not practical to have several representations for a very similar concept used within these algorithms. Based on experimentation within CIlib, a common structure was identified that could be used to represent the participants for these metaphor-based population based algorithms. We refer, collectively, to these algorithm participants as <code>Entity</code> instances.</p>
+<p>An <code>Entity</code> is a simple structure that contains and manages two very specific things:</p>
+<ul>
+  <li>A <code>Position[A]</code> within the current search space of the problem</li>
+  <li>A &ldquo;state&rdquo; that contains all addition data required by the <code>Entity</code>  which is not managed by the <code>Position[A]</code>.</li>
+</ul>
+<p>The resulting <code>Entity</code> is therefore represented by the following parameterized data type:</p>
+<pre><code>final case class Entity[S,A](state: S, pos: Position[A])
+</code></pre>
+<p>where <code>S</code> is the type of the state that the <code>Entity</code> maintains, and <code>A</code> is the type of the dimension element within a <code>Position[A]</code>.</p>
+<p>The state value differs between <code>Entity</code> instances. A Particle requires a velocity vector and a previous best position vector, whilst an Individual, requires no additional data other that a <code>Position</code>.</p>
+<p>Because the value of <code>S</code> within the <code>Entity</code> can be anything, it is not possible to have predefined functions that allow extraction of data the <code>S</code> parameter type. In order to enable this, optics are applied to the instances.</p>
+<p>Within the definitions of CIlib, an Individual is nothing more than an <code>Entity[Unit,A]</code> for some type <code>A</code>. As the type states, there is no state value for the <code>Entity</code>, and it is defined to be <code>Unit</code> - a type that exists with a single value (expressed as <code>()</code>), which is uninteresting.</p>
+<p>Some functions use <code>Entity</code> instances, but constrain the usage based on the shape of the <code>S</code> type parameter within the <code>Entity[S,A]</code>. As mentioned within the discussion of <a href="">lenses and optics</a>, a typeclass <code>HasMemory</code> is defined to allow a state to contain information about some kind of memory for an <code>Entity</code>. A data structure that provides this memory for a Particle is <code>Mem[A]</code>, and is simply the case class:</p>
+<pre><code>case class Mem[A](b: Position[A], v: Position[A])
+</code></pre>
+<p>There already exists an instance of <code>HasMemory</code> defined for the <code>Mem</code> data structure. Let&rsquo;s have a look at some usage:</p>
+<pre class="prettyprint"><code class="language-scala">scala&gt; // Lets create a function that expects the provided Entity to have
+     | // a memory within it&#39;s state parameter
+     | def foo[S](x: Entity[S,Double])(implicit mem: HasMemory[S,Double]) =
+     |   mem._memory.get(x.state)
+foo: [S](x: cilib.Entity[S,Double])(implicit mem: cilib.HasMemory[S,Double])cilib.Position[Double]
+
+scala&gt; // Now, lets create some Entity instances
+     | val interval = Interval(-5.12,5.12)^3
+interval: scalaz.NonEmptyList[spire.math.Interval[Double]] = NonEmpty[[-5.12, 5.12],[-5.12, 5.12],[-5.12, 5.12]]
+
+scala&gt; val individual = Position.createPosition(interval).map(p =&gt; Entity((), p))
+individual: cilib.RVar[cilib.Entity[Unit,Double]] = cilib.RVar$$anon$2@510273c6
+
+scala&gt; val particle = Position.createPosition(interval).map(p =&gt; Entity(Mem(p, p.zeroed), p))
+particle: cilib.RVar[cilib.Entity[cilib.Mem[Double],Double]] = cilib.RVar$$anon$2@39da819d
+</code></pre>
+<p>Take note of the value held by the state parameter in the resulting entity instances above. We would need to run the <code>RVar</code> computation to get the individual and particle values, or we can simply <code>map</code> the function <code>foo</code> into the <code>RVar</code>, changing the result of the computation to a <code>RVar</code> which when executed will return the memory of the <code>Entity</code>.</p>
+<pre class="prettyprint"><code class="language-scala">scala&gt; particle.map(p =&gt; foo(p)) // This works as expected: particles have a memory
+res3: cilib.RVar[cilib.Position[Double]] = cilib.RVar$$anon$2@20beb23a
+</code></pre>
+<p>Because <code>individual</code> does not have a memory defined, the following will fail. This failure is not only expected but required to ensure that incorrect usages are disallowed as soon as possible.</p>
+<pre class="prettyprint"><code class="language-scala">scala&gt; individual.map(i =&gt; foo(i))
+&lt;console&gt;:24: error: A HasMemory instance cannot be found for the provided state type Unit
+       individual.map(i =&gt; foo(i))
+                              ^
+</code></pre>
+<p>There are several optics predefined that allow for the zooming in of values in the <code>Position</code> as well as the state of an <code>Entity</code>. Of course a user could define their own optics, and it is recommended when custom state types are used, in order to work with the <code>Entity</code> data.</p>
+</div>
+<div>
+<a href="https://github.com/cirg-up/cilib/tree/master/docs/target/site-stage/design/entity.md" title="Edit this page" class="md-source-file md-edit">
+Edit this page
+</a>
+</div>
+<div class="print-only">
+<span class="md-source-file md-version">
+2.0.1-24-g00032e7
+</span>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav class="md-footer-nav__inner md-grid">
+<a href="../design/position.html" title="Position" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Previous
+</span>
+Position
+</span>
+</div>
+</a>
+<a href="../design/rvar.html" title="RVar" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Next
+</span>
+RVar
+</span>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+Powered by
+<a href="https://github.com/lightbend/paradox">Paradox</a>
+and
+<a href="https://jonas.github.io/paradox-material-theme/">Paradox Material Theme</a>
+
+</div>
+</div>
+</div>
+</footer>
+
+</div>
+<script src="../assets/javascripts/application.5165553b.js"></script>
+<script src="../assets/javascripts/paradox-material-theme.js"></script>
+<script>app.initialize({version:"0.17",url:{base:"../."}})</script>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function(event) {
+window.prettyPrint && prettyPrint();
+});
+</script>
+</body>
+</html>

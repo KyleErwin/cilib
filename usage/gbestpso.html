@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="description" content="docs">
+<meta name="generator" content="Paradox, paradox-material-theme=0.4.0, mkdocs-material=2.2.2">
+
+<meta name="lang:clipboard.copy" content="Copy to clipboard">
+<meta name="lang:clipboard.copied" content="Copied to clipboard">
+<meta name="lang:search.result.none" content="No matching documents">
+<meta name="lang:search.result.one" content="1 matching document">
+<meta name="lang:search.result.other" content="# matching documents">
+<meta name="lang:search.language" content="">
+<meta name="lang:search.tokenizer" content="[\s\-]+">
+
+
+<meta name="description" content="docs">
+<link rel="shortcut icon" href="../img/favicon.png">
+<title>Global Best PSO (GBestPSO) · Cilib</title>
+<link rel="stylesheet" href="../assets/stylesheets/application.7a4cdee3.css">
+<link rel="stylesheet" href="../lib/material__tabs/dist/mdc.tabs.min.css">
+<link rel="stylesheet" href="../lib/prettify/prettify.css">
+<script src="../lib/modernizr/modernizr.min.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+<style>
+body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}
+code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="../assets/stylesheets/paradox-material-theme.css">
+</head>
+<body
+>
+<input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="drawer">
+<input class="md-toggle" data-md-toggle="search" type="checkbox" id="search">
+<label class="md-overlay" data-md-component="overlay" for="drawer"></label>
+<header class="md-header" data-md-component="header">
+<nav class="md-header-nav md-grid">
+<div class="md-flex">
+<div class="md-flex__cell md-flex__cell--shrink">
+<a href="../index.html" title="Cilib" class="md-header-nav__button md-logo">
+<img src="../img/cilib_logo_transparent.png" width="24" height="24">
+</a>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--menu md-header-nav__button" for="drawer"></label>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch">
+<div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+<span class="md-header-nav__topic">
+Cilib
+</span>
+<span class="md-header-nav__topic">
+Global Best PSO (GBestPSO)
+</span>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--search md-header-nav__button" for="search"></label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="search"></label>
+<div class="md-search__inner">
+<form class="md-search__form" name="search">
+<input type="text" class="md-search__input" name="query" required placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query">
+<label class="md-icon md-search__icon" for="search"></label>
+<button type="reset" class="md-icon md-search__icon" data-md-component="reset">&#xE5CD;</button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix>
+<div class="md-search-result" data-md-component="result">
+<div class="md-search-result__meta">
+Type to start searching
+</div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<div class="md-header-nav__source">
+<a href="https://github.com/cirg-up/cilib"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+cirg-up/cilib
+</div>
+</a>
+
+</div>
+</div>
+</div>
+</nav>
+</header>
+
+<div class="md-container">
+<main class="md-main">
+<div class="md-main__inner md-grid" data-md-component="container">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--primary" data-md-level="0" style="visibility: hidden">
+<label class="md-nav__title md-nav__title--site" for="drawer">
+<span class="md-nav__button md-logo">
+<img src="../img/cilib_logo_transparent.png" width="24" height="24">
+</span>
+<a href="../index.html" title="Cilib">
+Cilib
+</a>
+</label>
+<div class="md-nav__source">
+<a href="https://github.com/cirg-up/cilib"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+cirg-up/cilib
+</div>
+</a>
+
+</div>
+<label class="md-nav__link" style="padding-left: 12px">
+<a href="../blog/index.html" title="Blog">
+Blog
+</a>
+</label>
+<label class="md-nav__link" style="padding-left: 12px; padding-bottom: 14px">
+<a href="../api/cilib" target="_blank">API</a>
+</label>
+<ul>
+  <li><a href="../design/index.html" class="page">Design</a>
+  <ul>
+    <li><a href="../design/overview.html" class="page">Overview</a></li>
+    <li><a href="../design/lenses.html" class="page">Immutable data</a></li>
+    <li><a href="../design/position.html" class="page">Position</a></li>
+    <li><a href="../design/entity.html" class="page">Entity</a></li>
+    <li><a href="../design/rvar.html" class="page">RVar</a></li>
+    <li><a href="../design/step.html" class="page">Step</a></li>
+    <li><a href="../design/step_with_state.html" class="page">Step with state (aka StepS)</a></li>
+  </ul></li>
+  <li><a href="../usage/index.html" class="page">Usage</a>
+  <ul>
+    <li><a href="../usage/gbestpso.html" class="active page">Global Best PSO (GBestPSO)</a></li>
+  </ul></li>
+</ul>
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="toc">Table of contents</label>
+<ul>
+  <li><a href="../usage/gbestpso.html#global-best-pso-gbestpso-" class="header">Global Best PSO (GBestPSO)</a>
+  <ul>
+    <li><a href="../usage/gbestpso.html#getting-things-ready" class="header">Getting things ready</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+<div class="md-nav__title--site md-version" title="Version">
+<i class="md-icon">label_outline</i> 2.0.1-24-g00032e7
+</div>
+</nav>
+
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="toc">Table of contents</label>
+<ul>
+  <li><a href="../usage/gbestpso.html#global-best-pso-gbestpso-" class="header">Global Best PSO (GBestPSO)</a>
+  <ul>
+    <li><a href="../usage/gbestpso.html#getting-things-ready" class="header">Getting things ready</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<div class="md-content__searchable">
+<h1><a href="#global-best-pso-gbestpso-" name="global-best-pso-gbestpso-" class="anchor"><span class="anchor-link"></span></a>Global Best PSO (GBestPSO)</h1>
+<p>The <code>GBestPSO</code> is the canonical version of the PSO. It is popular, not only, because it is the original version of the algorithm (which is cited often within literature), but is also a simple algorithm to implement.</p>
+<p>As with all algorithms modelled as a function, the type of the <code>GBestPSO</code> is simply defined as:</p>
+<pre><code>List[Particle[S,A]] =&gt; RVar[List[Particle[S,A]]]
+</code></pre>
+<p>where a collection of entities are transformed from a given set of entities to a new collection of entities, with randomness applied. This process is then repeatedly reapplied, until a stopping condition is reached.</p>
+<p>We&rsquo;re going to exclude the import statements simply for brevity, but the reader is encouraged to examine the example algorithm definition in the <code>examples</code> sub-module of the project source.</p>
+<h2><a href="#getting-things-ready" name="getting-things-ready" class="anchor"><span class="anchor-link"></span></a>Getting things ready</h2>
+<p>In order to define an experiment, there are a couple of things we need to get ready first. The most obvious should be that there needs to be some kind of problem, upon which we will be executing the <code>GBestPSO</code>.</p>
+<p>As the very first step, we need to get the needed imports in scope:</p>
+<pre class="prettyprint"><code class="language-scala">import cilib._
+import cilib.pso._
+import cilib.exec._
+
+import eu.timepit.refined.auto._
+
+import scalaz.effect._
+import scalaz.effect.IO.putStrLn
+import spire.implicits._
+import spire.math.Interval
+
+import cilib.syntax.algorithm._
+
+import scalaz._
+import Scalaz._
+</code></pre>
+<p>Next, we define the <code>GBestPSO</code> itself. The <code>GBestPSO</code> is defined to use a velocity update equation that uses the personal best of the current particle and then the collection&rsquo;s current best particle to determine the new velocity vector for the current particle within the algorithm.</p>
+<p>Let&rsquo;s define the two &ldquo;particle attractors&rdquo; which we need in the velocity update equation. Because these two values will attract or guide the particle in the search space, we refer to them as <code>Guide</code> instances:</p>
+<pre class="prettyprint"><code class="language-scala">scala&gt; val cognitive = Guide.pbest[Mem[Double],Double]
+cognitive: cilib.pso.Guide[cilib.Mem[Double],Double] = cilib.pso.Guide$$$Lambda$16276/1617457243@2c33f47e
+
+scala&gt; val social    = Guide.gbest[Mem[Double]]
+social: cilib.pso.Guide[cilib.Mem[Double],Double] = cilib.pso.Guide$$$Lambda$16278/706217843@75425164
+</code></pre>
+<p>Again, we need to provide some type parameters to keep the compiler happy, but in this case we need to provide a type called <code>Mem[Double]</code>, which is needed to track the memory of a particle and at the same time, fulfills the function constraints of the PSO algorithm itself: that the algorithm participants must cater for a <code>HasMemory</code> instance which exists for the <code>Mem[Double]</code> type.</p>
+<p>Now we can define the algorithm itself, providing some constants that are known to provide convergent behaviour within the PSO:</p>
+<pre class="prettyprint"><code class="language-scala">scala&gt; val gbestPSO = pso.Defaults.gbest(0.729844, 1.496180, 1.496180, cognitive, social)
+gbestPSO: scalaz.NonEmptyList[cilib.pso.Particle[cilib.Mem[Double],Double]] =&gt; (cilib.pso.Particle[cilib.Mem[Double],Double] =&gt; cilib.Step[Double,cilib.pso.Particle[cilib.Mem[Double],Double]]) = cilib.pso.Defaults$$$Lambda$16290/1787884728@701a202b
+
+scala&gt; val iter = Iteration.sync(gbestPSO)
+iter: scalaz.Kleisli[[β$0$]cilib.Step[Double,β$0$],scalaz.NonEmptyList[cilib.pso.Particle[cilib.Mem[Double],Double]],scalaz.NonEmptyList[cilib.pso.Particle[cilib.Mem[Double],Double]]] = Kleisli(cilib.Iteration$$$Lambda$16295/1475659034@71b09bc4)
+</code></pre>
+<p>Now that the algorithm is defined, we need to define an &ldquo;environment&rdquo; within which this algorithm will execute. The environment is simply a collection of vaues that defines the comparison and evaluator for the algorithm, such as minimizing a benchmark problem.</p>
+<p>Let&rsquo;s define such an environment using a simple problem, borrowing the problem definition from the <a href="https://github.com/cirg-up/benchmarks">benchmarks sister project</a>. We will also be minimizing this problem and defining the bounds of the problem space.</p>
+<pre class="prettyprint"><code class="language-scala">scala&gt; val env =
+     |   Environment(
+     |     cmp = Comparison.dominance(Min),
+     |     eval = Eval.unconstrained(cilib.benchmarks.Benchmarks.spherical[NonEmptyList, Double]))
+env: cilib.Environment[Double] = cilib.Environment@666c7a54
+
+scala&gt; val bounds = Interval(-5.12,5.12)^30
+bounds: scalaz.NonEmptyList[spire.math.Interval[Double]] = NonEmpty[[-5.12, 5.12],[-5.12, 5.12],[-5.12, 5.12],[-5.12, 5.12],[-5.12, 5.12],[-5.12, 5.12],[-5.12, 5.12],[-5.12, 5.12],[-5.12, 5.12],[-5.12, 5.12],[-5.12, 5.12],[-5.12, 5.12],[-5.12, 5.12],[-5.12, 5.12],[-5.12, 5.12],[-5.12, 5.12],[-5.12, 5.12],[-5.12, 5.12],[-5.12, 5.12],[-5.12, 5.12],[-5.12, 5.12],[-5.12, 5.12],[-5.12, 5.12],[-5.12, 5.12],[-5.12, 5.12],[-5.12, 5.12],[-5.12, 5.12],[-5.12, 5.12],[-5.12, 5.12],[-5.12, 5.12]]
+</code></pre>
+<p>Here we define a the evaluator, which is an unconstrained <code>Eval</code> instance, which uses the <code>spherical</code> function definiton from the benchmarks project. We explicitly provide the needed type parameters to keep the compiler happy, that being that the <code>Position</code> is a <code>NonEmtpyList[Double]</code>. Additionally, the <code>cmp</code> value defines <em>how</em> the optimization will be driven, which is to minimize the evaluator in this example.</p>
+<p>Let&rsquo;s now define the entity collection that we need to given the algorithm instance. The collection requires the problem bounds and also defines how the entity instances will be initialized, once random positions are generated for the given problem space</p>
+<pre class="prettyprint"><code class="language-scala">scala&gt; val swarm = Position.createCollection(PSO.createParticle(x =&gt; Entity(Mem(x, x.zeroed), x)))(bounds, 20)
+swarm: cilib.RVar[scalaz.NonEmptyList[cilib.pso.Particle[cilib.Mem[Double],Double]]] = cilib.RVar$$anon$2@19cd25ec
+</code></pre>
+<p>The last requirement is to provide the RNG instance that will use used within the algorithm. We define this value and then repeatedly run the algorithm on the entity collection, stopping after 1000 iterations of the algorithm have been performed</p>
+<pre class="prettyprint"><code class="language-scala">scala&gt; val rng = RNG.fromTime // Seed the RNG with the current time of the computer
+rng: cilib.RNG = cilib.CMWC@79aff1cb
+
+scala&gt; val result = Runner.repeat(1000, iter, swarm).run(env).run(rng)
+result: (cilib.RNG, Exception \/ scalaz.NonEmptyList[cilib.pso.Particle[cilib.Mem[Double],Double]]) = (cilib.CMWC@17224138,\/-(NonEmpty[Entity(Mem(Solution(NonEmpty[5.686719188163654E-7,-2.3946223390349487E-6,7.560532480384612E-6,-6.7662555395613885E-6,5.800093798249181E-7,8.450978889122097E-7,2.060274797306434E-6,6.284803620318133E-8,-2.4511743917126184E-6,-2.1936382153933628E-8,6.576458350516085E-7,1.0083964977157154E-6,1.7860596755036463E-6,9.975414310955038E-7,2.042945759745166E-6,-1.8430695028414522E-6,1.61954190046429E-6,-2.38680028460224E-6,2.9702782201883686E-6,-1.8210487112810517E-8,-5.1996718497730076E-6,2.006321988067839E-6,3.110415694194293E-6,2.6491508742658445E-6,1.3024238050520928E-6,1.3801305449347949E-6,-3.309101615024485E-7,2.642913171705301E-4,9.921908510089467E-7,1.2...
+
+scala&gt; result._2 match {
+     |   case -\/(error) =&gt;
+     |     // Not much to do. The process failed with an error
+     |     throw error
+     | 
+     |   case \/-(value) =&gt;
+     |     value.map(x =&gt; Lenses._position.get(x))
+     | }
+res0: scalaz.NonEmptyList[cilib.Position[Double]] = NonEmpty[Solution(NonEmpty[5.686719188163654E-7,-2.3946223390349487E-6,7.560532480384612E-6,-6.7662555395613885E-6,5.800093798249181E-7,8.450978889122097E-7,2.060274797306434E-6,6.284803620318133E-8,-2.4511743917126184E-6,-2.1936382153933628E-8,6.576458350516085E-7,1.0083964977157154E-6,1.7860596755036463E-6,9.975414310955038E-7,2.042945759745166E-6,-1.8430695028414522E-6,1.61954190046429E-6,-2.38680028460224E-6,2.9702782201883686E-6,-1.8210487112810517E-8,-5.1996718497730076E-6,2.006321988067839E-6,3.110415694194293E-6,2.6491508742658445E-6,1.3024238050520928E-6,1.3801305449347949E-6,-3.309101615024485E-7,2.642913171705301E-4,9.921908510089467E-7,1.2163709857595233E-5],NonEmpty[[-5.12, 5.12],[-5.12, 5.12],[-5.12, 5.12],[-5.12, 5.12],[...
+</code></pre>
+</div>
+<div>
+<a href="https://github.com/cirg-up/cilib/tree/master/docs/target/site-stage/usage/gbestpso.md" title="Edit this page" class="md-source-file md-edit">
+Edit this page
+</a>
+</div>
+<div class="print-only">
+<span class="md-source-file md-version">
+2.0.1-24-g00032e7
+</span>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav class="md-footer-nav__inner md-grid">
+<a href="../usage/index.html" title="Usage" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Previous
+</span>
+Usage
+</span>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+Powered by
+<a href="https://github.com/lightbend/paradox">Paradox</a>
+and
+<a href="https://jonas.github.io/paradox-material-theme/">Paradox Material Theme</a>
+
+</div>
+</div>
+</div>
+</footer>
+
+</div>
+<script src="../assets/javascripts/application.5165553b.js"></script>
+<script src="../assets/javascripts/paradox-material-theme.js"></script>
+<script>app.initialize({version:"0.17",url:{base:"../."}})</script>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function(event) {
+window.prettyPrint && prettyPrint();
+});
+</script>
+</body>
+</html>
