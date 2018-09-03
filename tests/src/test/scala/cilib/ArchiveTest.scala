@@ -9,7 +9,6 @@ import org.scalacheck.Arbitrary._
 import eu.timepit.refined._
 
 object GenArchive {
-
   def unboundedArchive: Gen[Archive[Double]] = for {
     u <- Archive.unbounded[Double]
   } yield u
@@ -31,10 +30,10 @@ object GenArchive {
   }
 
   def boundedNonEmptyArchive: Gen[Archive[Double]] = for {
-  n <- Gen.chooseNum(1, 100)
-  list <- Gen.listOfN(n, arbitrary[Double])
-  x <- Gen.posNum[Int]
-  b <- refineV[Positive](x) match {
+    n <- Gen.chooseNum(1, 100)
+    list <- Gen.listOfN(n, arbitrary[Double])
+    x <- Gen.posNum[Int]
+    b <- refineV[Positive](x) match {
       case Left(_) => Gen.fail
       case Right(value) => Gen.const(value)
     }
@@ -52,49 +51,69 @@ object ArchiveTest extends Properties("Archive") {
       archive.bound match {
         case Unbounded() => {
           val x = archive.insert(7.7)
-          (x.size == archive.size + 1) && x.contains(7.7)
+          (x.size == archive.size + 1)
         }
         case Bounded(limit) => {
           if(archive.size < limit.toString().toInt){
             val x = archive.insert(7.7)
-            (x.size == archive.size + 1) && x.contains(7.7)
+            (x.size == archive.size + 1)
           }
           else{
             val x = archive.insert(7.7)
-            (x.size == archive.size) && !x.contains(7.7)
+            (x.size == archive.size)
           }
         }
       }
     }
-  property("Archive Delete") =
+
+  property("Archive toList Values") =
     forAll { archive: Archive[Double] =>
       archive.size match {
-        case 0 =>  {
-          val x = archive.delete(9)
-          (x.size == 0) && (archive.size == 0)
+        case 0 => archive.toList == None
+        case _ => archive.toList.size == archive.size
+      }
+    }
+
+  property("Archive Insert with Condition (Insert Expected)") =
+    forAll { archive: Archive[Double] =>
+      val toBeInserted = 69.0
+      val cond= (_: Double, _: Double) => true
+      archive.bound match {
+        case Unbounded() => {
+          val result = archive.insertWith(cond)(toBeInserted)
+          (result.size == archive.size + 1)
         }
-        case _ => {
-          val rm = archive.head.get
-          val x = archive.delete(rm)
-          (x.size <= archive.size - 1) && !x.contains(rm)
+        case Bounded(limit) => {
+          if(archive.size < limit.value){
+            val result = archive.insertWith(cond)(toBeInserted)
+            (result.size == archive.size + 1)
+          }
+          else{
+            val result = archive.insertWith(cond)(toBeInserted)
+            (result.size == archive.size) && (result.size == limit) // Check... Archive management.. like most crowed deleted if full archive.
+          }
         }
       }
     }
-  property("Archive Values") =
-    forAll { archive: Archive[Double] =>
-      archive.size match {
-        case 0 => archive.values == None
-        case _ => archive.values.get.size == archive.toList.size
+
+  property("Archive Insert with Condition (Insert NOT Expected)") =
+  forAll { archive: Archive[Double] =>
+    archive.size match {
+      case 0 => {
+        val notToBeInserted = 99.0
+        val cond = (_: Double, _: Double) => false
+        val result = archive.insertWith(cond)(notToBeInserted)
+        (result.size == archive.size + 1)
+      }
+      case _ => {
+        val notToBeInserted = 99.0
+        val cond = (_: Double,_: Double) => false
+        val result = archive.insertWith(cond)(notToBeInserted)
+        (result.size == archive.size)
       }
     }
-  property("Archive Replace") =
-    forAll { archive: Archive[Double] =>
-      archive.size match {
-        case 0 => archive.replace(1,1000).size == archive.size
-        case _ => archive.replace(archive.toList.head, 1000).values.get.size == archive.toList.size
-      }
-    }
-  
+  }
+
   implicit def arbArchive: Arbitrary[Archive[Double]] =
     Arbitrary{
       Gen.frequency((1, GenArchive.unboundedArchive), (2, GenArchive.boundedArchive), (4, GenArchive.boundedNonEmptyArchive), (4, GenArchive.unboundedNonEmptyArchive))
