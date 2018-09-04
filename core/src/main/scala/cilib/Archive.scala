@@ -64,12 +64,6 @@ sealed abstract class Archive[A] {
       case NonEmpty(_, _, _) => false
     }
 
-  def head: Option[A] =
-    this match {
-      case Empty(_, _)       => None
-      case NonEmpty(l, _, _) => l.headOption
-    }
-
   def size: Int =
     this match {
       case Empty(_, _)       => 0
@@ -104,5 +98,4 @@ object Archive {
     val emptyArchive: Archive[A] = unbounded(insertPolicy)
     seeds.foldLeft(emptyArchive)((archive, seed) => archive.insert(seed))
   }
-
 }
