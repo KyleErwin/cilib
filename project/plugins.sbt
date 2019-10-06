@@ -14,7 +14,7 @@ addSbtPlugin("io.github.jonas" % "sbt-paradox-material-theme" % "0.4.0")
 
 addSbtPlugin("org.tpolecat" % "tut-plugin" % "0.6.7")
 
-addSbtPlugin("com.dwijnand" % "sbt-travisci" % "1.1.1")
+addSbtPlugin("com.dwijnand" % "sbt-travisci" % "1.2.0")
 
 addSbtPlugin("io.get-coursier" % "sbt-coursier" % "1.0.0")
 
