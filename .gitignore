@@ -11,5 +11,7 @@ readme.content
 project/travis-deploy-key*
 local.*
 .idea
+.bloop
+.metals
 *.csv
 *.sc
