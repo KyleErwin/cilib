@@ -1,15 +1,13 @@
 package cilib
 package example
 
-import scalaz.Scalaz._
-import scalaz._
-import scalaz.effect._
-import scalaz.effect.IO.putStrLn
-
 import eu.timepit.refined._
 import eu.timepit.refined.api._
 import eu.timepit.refined.auto._
 import eu.timepit.refined.numeric.Positive
+import scalaz.Scalaz._
+import scalaz.effect.IO.putStrLn
+import scalaz.effect._
 
 object SetPSO extends SafeApp {
 
@@ -39,7 +37,7 @@ object SetPSO extends SafeApp {
     xs ::: ugh
   }
 
-  def multiplcationByScalar[A](velocity: List[A]): RVar[List[A]] =
+  def multiplicationByScalar[A](velocity: List[Pair]): RVar[List[Pair]] =
     Dist.stdUniform
       .flatMap { n =>
         refineV[Positive]((n * velocity.size).toInt) match {
@@ -51,8 +49,60 @@ object SetPSO extends SafeApp {
         }
       }
 
+  def addition2(velocity: List[Pair], position: List[Int]): List[Int] =
+    (position ::: velocity).flatMap {
+      case Pair(Plus(), value) => List(value)
+      case Pair(Minus(), value) => Nil
+    }.distinct
+
+  def indicator(r: Double, floor: Int, beta: Double): Int =
+    if (r < (beta - floor.toDouble)) 1 else 0
+
+  def N[A](beta: Double Refined Positive, set: Set[A]): RVar[Int] =
+    Dist.stdUniform.map { r =>
+      val floor = beta.value.toInt
+      math.min(set.size, floor + indicator(r, floor, beta))
+    }
+
+  def choose[A](n: Int Refined Positive, set: Set[A]): RVar[Set[A]] =
+    RVar.choices(n, set).map {
+      case Some(list) => list.toSet
+      case None => Set.empty
+    }
+
+  def choose[A](n: Int, set: Set[A]): RVar[Set[A]] =
+    setFromEither[Int, A](refineV[Positive](n), x => choose(x, set))
+
+  def setFromEither[A, B](
+                           either: Either[String, Refined[A, Positive]],
+                           f: Refined[A, Positive] => RVar[Set[B]]
+                         ): RVar[Set[B]] =
+    either match {
+      case Left(_) => RVar.pure(Set.empty[B])
+      case Right(refined) => f(refined)
+    }
+
+  def select[A](set: Set[A]): RVar[Set[A]] =
+    Dist.stdUniform >>= { beta =>
+      setFromEither(refineV[Positive](beta), value => N(value, set) >>= (x => choose(x, set)))
+    }
+
+  //  def select[A](set: Set[A]): RVar[Set[A]] =
+  //    for {
+  //    beta <- Dist.stdUniform
+  //    n <- N()
+  //    }
+  //
+  //
+  //  def removal(position: Set[Int]): RVar[Set[Pair]] =
+  //    for {
+  //      beta <- Dist.stdUniform
+  //      selected <- N(beta, position)
+  //    } yield selected.map(Pair(Minus(), _))
+
   val pos1 = List(1, 2, 3)
   val pos2 = List(1, 4, 5)
+
   override val runc: IO[Unit] =
     for {
       _ <- putStrLn(difference(pos1, pos2).toString())
