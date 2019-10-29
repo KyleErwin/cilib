@@ -3,7 +3,6 @@ package example
 
 import eu.timepit.refined._
 import eu.timepit.refined.api._
-import eu.timepit.refined.auto._
 import eu.timepit.refined.numeric.Positive
 import scalaz.Scalaz._
 import scalaz.effect.IO.putStrLn
@@ -55,14 +54,17 @@ object SetPSO extends SafeApp {
       case Pair(Minus(), value) => Nil
     }.distinct
 
-  def indicator(r: Double, floor: Int, beta: Double): Int =
-    if (r < (beta - floor.toDouble)) 1 else 0
+  def indicator(r: Double, floor: Int, beta: Double Refined Positive): Int =
+    if (r < (beta.value - floor.toDouble)) 1 else 0
 
   def N[A](beta: Double Refined Positive, set: Set[A]): RVar[Int] =
     Dist.stdUniform.map { r =>
       val floor = beta.value.toInt
       math.min(set.size, floor + indicator(r, floor, beta))
     }
+
+  def N[A](beta: Double, set: Set[A]): Either[String, RVar[Int]] =
+    refineV[Positive](beta).map(N(_, set))
 
   def choose[A](n: Int Refined Positive, set: Set[A]): RVar[Set[A]] =
     RVar.choices(n, set).map {
@@ -71,21 +73,18 @@ object SetPSO extends SafeApp {
     }
 
   def choose[A](n: Int, set: Set[A]): RVar[Set[A]] =
-    setFromEither[Int, A](refineV[Positive](n), x => choose(x, set))
-
-  def setFromEither[A, B](
-                           either: Either[String, Refined[A, Positive]],
-                           f: Refined[A, Positive] => RVar[Set[B]]
-                         ): RVar[Set[B]] =
-    either match {
-      case Left(_) => RVar.pure(Set.empty[B])
-      case Right(refined) => f(refined)
+    refineV[Positive](n) match {
+      case Left(_) => RVar.pure(Set.empty)
+      case Right(refined) => choose(refined, set)
     }
 
   def select[A](set: Set[A]): RVar[Set[A]] =
     Dist.stdUniform >>= { beta =>
-      setFromEither(refineV[Positive](beta), value => N(value, set) >>= (x => choose(x, set)))
+      N(beta, set)
+        .map(_ >>= (amount => choose(amount, set)))
+        .getOrElse(RVar.pure(Set.empty))
     }
+
 
   //  def select[A](set: Set[A]): RVar[Set[A]] =
   //    for {
