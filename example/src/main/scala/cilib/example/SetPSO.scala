@@ -7,6 +7,8 @@ import eu.timepit.refined.numeric.Positive
 import scalaz.Scalaz._
 import scalaz.effect.IO.putStrLn
 import scalaz.effect._
+import spire.implicits._
+import spire.math.Interval
 
 object SetPSO extends SafeApp {
 
@@ -78,26 +80,60 @@ object SetPSO extends SafeApp {
       case Right(refined) => choose(refined, set)
     }
 
+  def select[A](beta: Double, set: Set[A]): RVar[Set[A]] =
+    N(beta, set)
+      .map(_ >>= (amount => choose(amount, set)))
+      .getOrElse(RVar.pure(Set.empty))
+
   def select[A](set: Set[A]): RVar[Set[A]] =
-    Dist.stdUniform >>= { beta =>
-      N(beta, set)
-        .map(_ >>= (amount => choose(amount, set)))
-        .getOrElse(RVar.pure(Set.empty))
+    Dist.stdUniform >>= (beta => select(beta, set))
+
+  def removal(position: Set[Int]): RVar[Set[Pair]] =
+    select(position).map { selected =>
+      selected.map(x => Pair(Minus(), x))
     }
 
+  def pick[A](x: Int, set: Set[A]): Option[A] =
+    set.zipWithIndex.foldLeft(Option.empty[A]) {
+      case (a, (elem, index)) => if (a.isEmpty && index === x) Some(elem) else a
+    }
 
-  //  def select[A](set: Set[A]): RVar[Set[A]] =
-  //    for {
-  //    beta <- Dist.stdUniform
-  //    n <- N()
-  //    }
-  //
-  //
-  //  def removal(position: Set[Int]): RVar[Set[Pair]] =
-  //    for {
-  //      beta <- Dist.stdUniform
-  //      selected <- N(beta, position)
-  //    } yield selected.map(Pair(Minus(), _))
+  def kTournamentSelection(
+                            position: Set[Int],
+                            A: Set[Int],
+                            k: Int,
+                            objective: Set[Int] => Double
+                          ) =
+    Dist.uniformInt(Interval.closed(0, A.size)).replicateM(k).map { xs =>
+      xs.map(x => pick(x, A))
+        .foldLeft(Option.empty[(Int, Double)]) {
+          case (None, None) => None
+          case (None, Some(x)) => Some((x, objective(position + x)))
+          case (Some((m, f)), None) => Some((m, f))
+          case (Some((m, f)), Some(x)) =>
+            val xf = objective(position + x)
+            if (xf < f) Some((x, xf))
+            else Some((m, f))
+        }
+        .map { case (x, _) => x }
+    }
+
+  def kTournamentSelection(
+                            position: Set[Int],
+                            A: Set[Int],
+                            n: Int,
+                            k: Int,
+                            objective: Set[Int] => Double
+                          ) =
+    kTournamentSelection(position, A, k, objective)
+      .replicateM(n)
+      .map(_ >>= {
+        case Some(x) => List(x)
+        case None => Nil
+      })
+      .map(_.toSet)
+
+  val x = Set(1)
 
   val pos1 = List(1, 2, 3)
   val pos2 = List(1, 4, 5)
