@@ -4,11 +4,15 @@ package example
 import eu.timepit.refined._
 import eu.timepit.refined.api._
 import eu.timepit.refined.numeric.Positive
+import scalaz.NonEmptyList
 import scalaz.Scalaz._
 import scalaz.effect.IO.putStrLn
 import scalaz.effect._
 
 object SetPSO extends SafeApp {
+
+  val x = NonEmptyList(4).toSet
+
 
   sealed abstract class Operation {
     def run(x: Double, y: Double): Double =
@@ -23,32 +27,51 @@ object SetPSO extends SafeApp {
   refineV[Positive](52)
   final case class Pair(operation: Operation, value: Int)
 
-  def addition(v1: List[Pair], v2: List[Pair]): List[Pair] =
-    (v1 ::: v2).distinct
+  // The addition of two velocities, V1⊕V2
+  // ⊕ : P({+,−} * U)^2 -> P({+,−} * U)
+  def add[A](v1: Set[A], v2: Set[A]): Set[A] =
+    (v1 ++ v2)
 
-  def difference(p1: List[Int], p2: List[Int]): List[Pair] = {
-    val xs = p1.foldLeft(List[Pair]()) {
-      case (a, c) => if (!p2.contains(c)) Pair(Plus(), c) :: a else a
+  // The difference between two positions, X1⊖X2
+  // ⊖ : P(U)^2 -> P({+,−} * U)
+  // X1⊖X2 = {+} * (X1\X2) ∪ {−} * (X2\X1)
+  def subtract(p1: Set[Int], p2: Set[Int]): Set[Pair] = {
+    val xs = p1.foldLeft(Set[Pair]()) {
+      case (a, c) => if (!p2.contains(c)) a + Pair(Plus(), c) else a
     }
-    val ugh = p2.foldLeft(List[Pair]()) {
-      case (a, c) => if (!p1.contains(c)) Pair(Minus(), c) :: a else a
+    val ugh = p2.foldLeft(Set[Pair]()) {
+      case (a, c) => if (!p1.contains(c)) a + Pair(Minus(), c) else a
     }
-    xs ::: ugh
+    xs ++ ugh
   }
 
-  def multiplicationByScalar[A](velocity: List[Pair]): RVar[List[Pair]] =
+  //⊗
+  def multiply[A](velocity: Set[A]): RVar[Set[A]] =
     Dist.stdUniform
       .flatMap { n =>
         refineV[Positive]((n * velocity.size).toInt) match {
           case Right(refined) =>
             RVar.choices(refined, velocity).map { result =>
-              result.getOrElse(velocity)
+              result.map(_.toSet).getOrElse(velocity)
             }
           case Left(_) => RVar.pure(velocity)
         }
       }
 
-  def addition2(velocity: List[Pair], position: List[Int]): List[Int] =
+  // The multiplication of a velocity by a scalar, n⊗V
+  // ⊗ : [0,1] * P({+,−} * U) -> P({+,−} * U)
+  def multiply[A](n: Double, set: Set[A]): RVar[Set[A]] =
+    refineV[Positive]((n * set.size).toInt) match {
+      case Right(refined) =>
+        RVar.choices(refined, set).map { result =>
+          result.map(_.toSet).getOrElse(set)
+        }
+      case Left(_) => RVar.pure(set)
+    }
+
+  // The addition of a velocity and a position, X⊞V
+  // is a mapping ⊞ : P(U) * P({+,−} * U) -> P(U)
+  def add(velocity: List[Pair], position: List[Int]): List[Int] =
     (position ::: velocity).flatMap {
       case Pair(Plus(), value) => List(value)
       case Pair(Minus(), value) => Nil
@@ -57,6 +80,7 @@ object SetPSO extends SafeApp {
   def indicator(r: Double, floor: Int, beta: Double Refined Positive): Int =
     if (r < (beta.value - floor.toDouble)) 1 else 0
 
+  // N(b,S) = min{|S|, ⌊b⌋ + II{r < b − ⌊b⌋}}
   def N[A](beta: Double Refined Positive, set: Set[A]): RVar[Int] =
     Dist.stdUniform.map { r =>
       val floor = beta.value.toInt
@@ -86,6 +110,9 @@ object SetPSO extends SafeApp {
   def select[A](set: Set[A]): RVar[Set[A]] =
     Dist.stdUniform >>= (beta => select(beta, set))
 
+  // The removal of elements in X(t) ∩ Y(t) ∩ bY(t) from a position X(t), ⊙−
+  // Denoted b ⊙− S,
+  // b⊙−S = {−} * (N(b,S)/|S| ⊗ S)
   def removal(position: Set[Int]): RVar[Set[Pair]] =
     select(position).map { selected =>
       selected.map(x => Pair(Minus(), x))
@@ -110,20 +137,37 @@ object SetPSO extends SafeApp {
                           ): RVar[Set[Int]] =
     (1 |-> n).traverse(_ => kTournamentSelection(position, A, k, objective)).map(xs => xs.toSet)
 
-  def addal(position: Set[Int], A: Set[Int], objective: Set[Int] => Double): RVar[Set[Pair]] =
-    Dist.stdUniform.map(beta => N(beta, A)) map {
+  // The addition of elements outside of X(t) ∪ Y(t) ∪ bY(t) to X(t), ⊙+
+  // b⊙+k A = {+} * k-TournamentSelection(A,N(b,A))
+  def addition(position: Set[Int], A: Set[Int], objective: Set[Int] => Double): RVar[Set[Int]] =
+    Dist.stdUniform.map(beta => N(beta, A)) >>= {
       case Left(_) => RVar.pure(position)
-      case Right(value) => value.map(n =>)
+      case Right(value) =>
+        for {
+          n <- value
+          winners <- kTournamentSelection(n, position, A, 5, objective)
+        } yield position ++ winners
     }
+
+  val c1, r1, c2, r2, c3, r3, c4, r4 = 1.0
+  val xt, pb, gb, A = Set[Int]()
+  val objective: Set[Int] => Double = set => 10.0
+
+  def updateVelocity() = {
+    val guide1 = multiply(c1 * r1, subtract(pb, xt))
+    val guide2 = multiply(c2 * r2, subtract(gb, xt))
+    val guide3 = addition(xt, A, objective).map(result => multiply(c3 * r3, result))
+    val guide4 = removal(xt).map(result => multiply(c4 * r4, result))
+  }
 
   val x = Set(1)
 
-  val pos1 = List(1, 2, 3)
-  val pos2 = List(1, 4, 5)
+  val pos1 = Set(1, 2, 3)
+  val pos2 = Set(1, 4, 5)
 
   override val runc: IO[Unit] =
     for {
-      _ <- putStrLn(difference(pos1, pos2).toString())
+      _ <- putStrLn(subtract(pos1, pos2).toString())
       _ <- putStrLn("Complete.")
     } yield ()
 
