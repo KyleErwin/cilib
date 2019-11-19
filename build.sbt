@@ -314,7 +314,8 @@ lazy val research = project
       moduleName := "cilib-research",
       libraryDependencies ++= Seq(
         "net.cilib" %% "benchmarks" % "0.1.1",
-        "org.scalaz" %% "scalaz-effect" % scalazVersion
+        "org.scalaz" %% "scalaz-effect" % scalazVersion,
+        "org.uma.jmetal" % "jmetal-problem" % "5.9"
       )
     ))
 

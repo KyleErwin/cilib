@@ -27,6 +27,7 @@ case class MGParticle(id: Int,
     this.copy(pos = pos.updateFitness(x))
 }
 
+
 object MGParticle {
 
   def createCollection(benchmark: Benchmark, lambdaStrategy: LambdaStrategy): RVar[NonEmptyList[MGParticle]] =

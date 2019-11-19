@@ -42,7 +42,7 @@ object LambdaStrategy {
   def LinearIncreasing(bounds: NonEmptyList[Interval[Double]]): LambdaStrategy =
     LambdaStrategy("LI",
                    RVar.pure(List.fill(bounds.size)(0.0).toNel.get),
-                   rl => rl.map(_.map(x => x + 0.0005)),
+      rl => rl.map(_.map(x => x + 0.002)),
                    List())
 
   def LinearDecreasing(bounds: NonEmptyList[Interval[Double]]): LambdaStrategy =

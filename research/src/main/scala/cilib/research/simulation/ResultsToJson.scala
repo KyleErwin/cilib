@@ -16,6 +16,14 @@ object ResultsToJson {
     } else ""
   }
 
+  def finalArchiveToString(run: Int, iteration: Int, archive: MGArchive): String = {
+    if (iteration === 500) {
+      archive.values
+        .map(x => x.pos.fitness.toList.mkString(" "))
+        .mkString("\n")
+    } else ""
+  }
+
   def particlesJson(particles: NonEmptyList[MGParticle]): String = {
     "\"swarm\": [" + particles.map(x => "{\"swarmID\": " + x.swarmID + ", \"fitness\": [" + x.pos.fitness.toList.mkString(",") + "]}").toList.mkString(",") + "]"
   }
