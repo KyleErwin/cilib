@@ -21,8 +21,8 @@ object Main extends SafeApp {
 
     val benchmarkSuites = NonEmptyList(
       BenchmarkSuite.ZDT,
-      BenchmarkSuite.WFG_2D,
-      BenchmarkSuite.WFG_3D
+      //      BenchmarkSuite.WFG_2D,
+      //      BenchmarkSuite.WFG_3D
     )
 
 
@@ -39,7 +39,7 @@ object Main extends SafeApp {
       //      }
 
       val lambdaStrategy = LambdaStrategy.Standard(bounds)
-      Simulation.runIO(lambdaStrategy, benchmark, 500, 30)
+      Simulation.runIO(lambdaStrategy, benchmark, 2000, 30)
     })
 
     for {

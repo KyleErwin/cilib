@@ -4,7 +4,6 @@ import cilib.research.benchmarks.zdt.ZDT
 import org.uma.jmetal.problem.multiobjective
 import org.uma.jmetal.solution.impl.ArrayDoubleSolution
 import scalaz.Scalaz._
-import scalaz._
 
 object BenchmarkTest extends App {
 
@@ -49,6 +48,7 @@ object BenchmarkTest extends App {
         case (f, jmetal) => {
           val solution = new ArrayDoubleSolution(jmetal)
           jmetal.evaluate(solution)
+
           val variables = (for (x <- 0 until solution.getNumberOfVariables)
             yield solution.getVariableValue(x)).toList.toNel.get.map(_.toDouble)
           val jmetalStr =

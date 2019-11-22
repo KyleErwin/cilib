@@ -17,7 +17,7 @@ object ResultsToJson {
   }
 
   def finalArchiveToString(run: Int, iteration: Int, archive: MGArchive): String = {
-    if (iteration === 500) {
+    if (iteration === 2000) {
       archive.values
         .map(x => x.pos.fitness.toList.mkString(" "))
         .mkString("\n")
